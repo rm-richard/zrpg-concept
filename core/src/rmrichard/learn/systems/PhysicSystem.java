@@ -42,17 +42,9 @@ public class PhysicSystem extends EntitySystem {
             BodyComponent bc = bm.get(entity);
             PositionComponent pc = pm.get(entity);
 
-            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                bc.body.applyLinearImpulse(500, 500, 50, 50, true);
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                bc.body.applyLinearImpulse(-500, -500, 100, 150, true);
-            }
-
             Vector2 position = bc.body.getPosition();
             pc.x = position.x;
             pc.y = position.y;
-            System.out.println("Pos: " + pc.x + " " + pc.y);
         }
     }
 }

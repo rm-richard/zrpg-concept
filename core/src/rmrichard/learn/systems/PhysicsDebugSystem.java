@@ -17,9 +17,6 @@ public class PhysicsDebugSystem extends EntitySystem {
         this.camera = camera;
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         box2DDebugRenderer.setDrawVelocities(true);
-        this.camera = new OrthographicCamera(800, 600);
-        this.camera.position.set(new Vector2(400, 300), 0);
-        this.camera.update();
     }
 
     @Override
