@@ -1,4 +1,4 @@
-package rmrichard.learn;
+package rmrichard.learn.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.Texture;

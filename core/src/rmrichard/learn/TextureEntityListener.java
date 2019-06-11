@@ -3,6 +3,7 @@ package rmrichard.learn;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
+import rmrichard.learn.components.TextureComponent;
 
 public class TextureEntityListener implements EntityListener {
     private ComponentMapper<TextureComponent> tm = ComponentMapper.getFor(TextureComponent.class);
