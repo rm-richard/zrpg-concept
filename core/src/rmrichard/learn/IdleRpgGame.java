@@ -24,6 +24,9 @@ import rmrichard.learn.systems.PhysicSystem;
 import rmrichard.learn.systems.PhysicsDebugSystem;
 import rmrichard.learn.systems.PlayerMovementSystem;
 
+import static rmrichard.learn.Constants.VIEW_HEIGHT;
+import static rmrichard.learn.Constants.VIEW_WIDTH;
+
 public class IdleRpgGame extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Engine engine;
@@ -39,20 +42,20 @@ public class IdleRpgGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		engine = new Engine();
 		world = new World(new Vector2(0, 0), true);
-		camera = new OrthographicCamera(640, 480);
-		camera.position.set(new Vector2(320, 240), 0);
+		camera = new OrthographicCamera(VIEW_WIDTH, VIEW_HEIGHT);
+		camera.position.set(new Vector2(VIEW_WIDTH / 2, VIEW_HEIGHT / 2), 0);
 
 		createPlayer();
 
 		engine.addSystem(new DrawSystem(batch, camera));
 		engine.addSystem(new PhysicSystem(world));
 		engine.addSystem(new PlayerMovementSystem());
-		engine.addSystem(new PhysicsDebugSystem(world, camera));
+		//engine.addSystem(new PhysicsDebugSystem(world, camera));
 
 		tiledMap = new TmxMapLoader().load("game-map.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		tiledCamera = new OrthographicCamera();
-		tiledCamera.setToOrtho(false, 640, 480);
+		tiledCamera.setToOrtho(false, VIEW_WIDTH, VIEW_HEIGHT);
 		tiledCamera.update();
 	}
 
