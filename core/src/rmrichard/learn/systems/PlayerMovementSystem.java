@@ -3,11 +3,14 @@ package rmrichard.learn.systems;
 import com.badlogic.ashley.core.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import rmrichard.learn.components.BodyComponent;
 import rmrichard.learn.components.PlayerComponent;
 
 public class PlayerMovementSystem extends EntitySystem {
+
+    private static final float VELOCITY = 25f;
 
     private ComponentMapper<BodyComponent> bm = ComponentMapper.getFor(BodyComponent.class);
     private Entity player;
@@ -20,19 +23,29 @@ public class PlayerMovementSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         Body body = bm.get(player).body;
-        body.setLinearDamping(10f);
+        body.setLinearVelocity(0, 0);
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            body.applyLinearImpulse(0, 5000, 0, 0, true);
+            addLinearVelocity(body, 0, 1);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            body.applyLinearImpulse(0, -5000, 0, 0, true);
+            addLinearVelocity(body, 0, -1);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            body.applyLinearImpulse(5000, 0, 0, 0, true);
+            addLinearVelocity(body, 1, 0);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            body.applyLinearImpulse(-5000, 0, 0, 0, true);
+            addLinearVelocity(body, -1, 0);
         }
+
+        Vector2 v = body.getLinearVelocity();
+        v.setLength(VELOCITY);
+        body.setLinearVelocity(v.x, v.y);
+        System.out.println("x: " + v.x + " " + v.y);
+    }
+
+    private void addLinearVelocity(Body body, float x, float y) {
+        Vector2 v = body.getLinearVelocity();
+        body.setLinearVelocity(v.x + x, v.y + y);
     }
 }

@@ -2,8 +2,6 @@ package rmrichard.learn.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import rmrichard.learn.components.BodyComponent;
@@ -43,8 +41,8 @@ public class PhysicSystem extends EntitySystem {
             PositionComponent pc = pm.get(entity);
 
             Vector2 position = bc.body.getPosition();
-            pc.x = position.x;
-            pc.y = position.y;
+            pc.x = position.x * 10;
+            pc.y = position.y * 10;
         }
     }
 }

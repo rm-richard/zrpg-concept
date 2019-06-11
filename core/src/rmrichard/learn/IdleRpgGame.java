@@ -63,19 +63,14 @@ public class IdleRpgGame extends ApplicationAdapter {
 		playerEntity.add(new PlayerComponent());
 
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef.position.set(100, 100);
+		bodyDef.type = BodyDef.BodyType.KinematicBody;
+		bodyDef.position.set(10, 10);
 		bodyDef.fixedRotation = true;
 		Body body = world.createBody(bodyDef);
 
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(42, 48);
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = shape;
-		fixtureDef.friction = 2.2f;
-		fixtureDef.density = 0.01f;
-
-		body.createFixture(fixtureDef);
+		shape.setAsBox(4.2f, 4.8f);
+		body.createFixture(shape, 0);
 		shape.dispose();
 
 		playerEntity.add(new BodyComponent(body));
