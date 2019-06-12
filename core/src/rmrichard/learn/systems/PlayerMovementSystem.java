@@ -41,7 +41,6 @@ public class PlayerMovementSystem extends EntitySystem {
         Vector2 v = body.getLinearVelocity();
         v.setLength(VELOCITY);
         body.setLinearVelocity(v.x, v.y);
-        System.out.println("x: " + v.x + " " + v.y);
     }
 
     private void addLinearVelocity(Body body, float x, float y) {
