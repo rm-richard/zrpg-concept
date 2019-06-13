@@ -1,4 +1,4 @@
-package rmrichard.learn;
+package rmrichard.learn.listeners;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;

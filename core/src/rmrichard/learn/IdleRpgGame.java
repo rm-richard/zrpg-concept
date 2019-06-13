@@ -21,6 +21,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import rmrichard.learn.components.*;
+import rmrichard.learn.listeners.BodyRemovalListener;
+import rmrichard.learn.listeners.EntityContactListener;
 import rmrichard.learn.systems.*;
 
 import static rmrichard.learn.Constants.VIEW_HEIGHT;
