@@ -21,6 +21,7 @@ public class PlayerCollisionSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
+        PlayerComponent playerComponent = pm.get(entity);
         CollisionComponent collisionComponent = cm.get(entity);
         Entity collidedEntity = collisionComponent.collidedEntity;
 
@@ -35,16 +36,25 @@ public class PlayerCollisionSystem extends IteratingSystem {
 
         switch (itemComponent.itemType) {
             case KEY:
-                System.out.println("Collided with KEY");
+                System.out.println("Acquired key!");
+                playerComponent.hasKey = true;
+                getEngine().removeEntity(collidedEntity);
                 break;
             case COIN:
-                System.out.println("Collided with COIN");
+                System.out.println("Picked up a coin!");
+                getEngine().removeEntity(collidedEntity);
                 break;
             case DOOR:
-                System.out.println("Collided with DOOR");
+                System.out.print("Collided with DOOR - ");
+                if (playerComponent.hasKey) {
+                    System.out.println("and successfully unlocked it!");
+                    getEngine().removeEntity(collidedEntity);
+                 } else  {
+                    System.out.println("but you dont have the key!");
+                }
                 break;
             default:
-                System.out.println("Collided with unknown item type");
+                System.out.println("WARN: Collided with unknown item type");
         }
 
         collisionComponent.collidedEntity = null;

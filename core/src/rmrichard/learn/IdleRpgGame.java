@@ -2,8 +2,7 @@ package rmrichard.learn;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.signals.Listener;
-import com.badlogic.ashley.signals.Signal;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -56,6 +55,9 @@ public class IdleRpgGame extends ApplicationAdapter {
 		engine.addSystem(new PlayerMovementSystem());
 		engine.addSystem(new PlayerCollisionSystem());
 		//engine.addSystem(new PhysicsDebugSystem(world, camera));
+
+		engine.addEntityListener(Family.all(BodyComponent.class).get(),
+				new BodyRemovalListener(world));
 	}
 
 	private void createPlayer(float x, float y) {
