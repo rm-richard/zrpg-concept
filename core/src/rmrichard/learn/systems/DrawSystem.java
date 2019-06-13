@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import rmrichard.learn.components.PlayerComponent;
 import rmrichard.learn.components.PositionComponent;
@@ -19,10 +20,12 @@ public class DrawSystem extends EntitySystem {
     private ComponentMapper<TextureComponent> tm = ComponentMapper.getFor(TextureComponent.class);
 
     private OrthographicCamera camera;
+    private TiledMapRenderer tiledMapRenderer;
 
-    public DrawSystem(SpriteBatch spriteBatch, OrthographicCamera camera) {
+    public DrawSystem(SpriteBatch spriteBatch, OrthographicCamera camera, TiledMapRenderer tiledMapRenderer) {
         this.spriteBatch = spriteBatch;
         this.camera = camera;
+        this.tiledMapRenderer = tiledMapRenderer;
     }
 
     @Override
@@ -39,6 +42,11 @@ public class DrawSystem extends EntitySystem {
                 MathUtils.clamp(playerPos.y, VIEW_HEIGHT / 2, MAP_HEIGHT - VIEW_HEIGHT / 2),
                 0);
         camera.update();
+
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render(BACKGROUND_LAYERS);
+
+        spriteBatch.begin();
         spriteBatch.setProjectionMatrix(camera.combined);
 
         for (int i = 0; i < entities.size(); ++i) {
@@ -48,5 +56,8 @@ public class DrawSystem extends EntitySystem {
 
             spriteBatch.draw(tex.texture, pos.x, pos.y);
         }
+        spriteBatch.end();
+
+        tiledMapRenderer.render(FOREGROUND_LAYERS);
     }
 }

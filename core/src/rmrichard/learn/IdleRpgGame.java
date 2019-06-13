@@ -18,12 +18,18 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import rmrichard.learn.components.*;
 import rmrichard.learn.listeners.BodyRemovalListener;
 import rmrichard.learn.listeners.EntityContactListener;
-import rmrichard.learn.systems.*;
+import rmrichard.learn.systems.DrawSystem;
+import rmrichard.learn.systems.PhysicSystem;
+import rmrichard.learn.systems.PlayerCollisionSystem;
+import rmrichard.learn.systems.PlayerMovementSystem;
 
 import static rmrichard.learn.Constants.VIEW_HEIGHT;
 import static rmrichard.learn.Constants.VIEW_WIDTH;
@@ -37,9 +43,6 @@ public class IdleRpgGame extends ApplicationAdapter {
 
 	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
-	private OrthographicCamera tiledCamera;
-	private int[] backgroundLayers;
-	private int[] foregroundLayers;
 
 	@Override
 	public void create () {
@@ -52,7 +55,7 @@ public class IdleRpgGame extends ApplicationAdapter {
 
 		createTileMap();
 
-		engine.addSystem(new DrawSystem(batch, camera));
+		engine.addSystem(new DrawSystem(batch, camera, tiledMapRenderer));
 		engine.addSystem(new PhysicSystem(world));
 		engine.addSystem(new PlayerMovementSystem());
 		engine.addSystem(new PlayerCollisionSystem());
@@ -74,12 +77,7 @@ public class IdleRpgGame extends ApplicationAdapter {
 
 	private void createTileMap() {
 		tiledMap = new TmxMapLoader().load("game-map.tmx");
-		backgroundLayers = new int[] {0, 1};
-		foregroundLayers = new int[] {2};
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-		tiledCamera = new OrthographicCamera();
-		tiledCamera.setToOrtho(false, VIEW_WIDTH, VIEW_HEIGHT);
-		tiledCamera.update();
 
 		Texture coinTexture = new Texture("coin.png");
 		Texture doorTexture = new Texture("door.png");
@@ -164,18 +162,7 @@ public class IdleRpgGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0.2f, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		tiledCamera.position.x = camera.position.x;
-       	tiledCamera.position.y = camera.position.y;
-		tiledCamera.update();
-		tiledMapRenderer.setView(tiledCamera);
-
-		tiledMapRenderer.render(backgroundLayers);
-
-		batch.begin();
 		engine.update(Gdx.graphics.getDeltaTime());
-		batch.end();
-
-		tiledMapRenderer.render(foregroundLayers);
 	}
 	
 	@Override
