@@ -10,7 +10,7 @@ import rmrichard.learn.components.PlayerComponent;
 
 public class PlayerMovementSystem extends EntitySystem {
 
-    private static final float VELOCITY = 25f;
+    private static final float VELOCITY = 10f;
 
     private ComponentMapper<BodyComponent> bm = ComponentMapper.getFor(BodyComponent.class);
     private Entity player;

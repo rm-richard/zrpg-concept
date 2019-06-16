@@ -54,7 +54,8 @@ public class DrawSystem extends EntitySystem {
             PositionComponent pos = pm.get(entity);
             TextureComponent tex = tm.get(entity);
 
-            spriteBatch.draw(tex.texture, pos.x, pos.y);
+            spriteBatch.draw(tex.region, pos.x, pos.y, 0, 0, tex.region.getRegionWidth(), tex.region.getRegionHeight(),
+                    pos.scale, pos.scale, 0f);
         }
         spriteBatch.end();
 
