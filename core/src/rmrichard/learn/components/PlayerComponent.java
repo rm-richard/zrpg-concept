@@ -4,4 +4,5 @@ import com.badlogic.ashley.core.Component;
 
 public class PlayerComponent implements Component {
     public boolean hasKey = false;
+    public int coinsCollected = 0;
 }

@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import rmrichard.learn.components.CollisionComponent;
 import rmrichard.learn.components.ItemComponent;
 import rmrichard.learn.components.PlayerComponent;
@@ -15,8 +16,11 @@ public class PlayerCollisionSystem extends IteratingSystem {
     private ComponentMapper<CollisionComponent> cm = ComponentMapper.getFor(CollisionComponent.class);
     private ComponentMapper<ItemComponent> im = ComponentMapper.getFor(ItemComponent.class);
 
-    public PlayerCollisionSystem() {
+    private Label coinLabel;
+
+    public PlayerCollisionSystem(Label coinLabel) {
         super(Family.all(PlayerComponent.class, CollisionComponent.class).get());
+        this.coinLabel = coinLabel;
     }
 
     @Override
@@ -41,8 +45,9 @@ public class PlayerCollisionSystem extends IteratingSystem {
                 getEngine().removeEntity(collidedEntity);
                 break;
             case COIN:
-                System.out.println("Picked up a coin!");
                 getEngine().removeEntity(collidedEntity);
+                playerComponent.coinsCollected += 1;
+                coinLabel.setText("Coins collected: " + playerComponent.coinsCollected);
                 break;
             case DOOR:
                 System.out.print("Collided with DOOR - ");

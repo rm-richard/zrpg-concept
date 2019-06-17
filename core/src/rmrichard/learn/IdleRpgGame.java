@@ -5,9 +5,11 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -25,6 +27,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import rmrichard.learn.components.*;
 import rmrichard.learn.listeners.BodyRemovalListener;
 import rmrichard.learn.listeners.EntityContactListener;
@@ -43,6 +47,9 @@ public class IdleRpgGame extends Game {
 	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
 
+	private Stage uiStage;
+	private Label coinCollectedLabel;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -51,17 +58,26 @@ public class IdleRpgGame extends Game {
 		world.setContactListener(new EntityContactListener());
 		camera = new OrthographicCamera(VIEW_WIDTH, VIEW_HEIGHT);
 		camera.position.set(new Vector2(VIEW_WIDTH / 2, VIEW_HEIGHT / 2), 0);
-
+		createUiStage();
 		createTileMap();
 
 		engine.addSystem(new DrawSystem(batch, camera, tiledMapRenderer));
 		engine.addSystem(new PhysicSystem(world));
 		engine.addSystem(new PlayerMovementSystem());
-		engine.addSystem(new PlayerCollisionSystem());
+		engine.addSystem(new PlayerCollisionSystem(coinCollectedLabel));
 		//engine.addSystem(new PhysicsDebugSystem(world, camera));
 
 		engine.addEntityListener(Family.all(BodyComponent.class).get(),
 				new BodyRemovalListener(world));
+	}
+
+	private void createUiStage() {
+		uiStage = new Stage();
+		Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+		coinCollectedLabel = new Label("Coins collected: 0", style);
+		coinCollectedLabel.setFontScale(1.8f);
+		coinCollectedLabel.setPosition(560, 20);
+		uiStage.addActor(coinCollectedLabel);
 	}
 
 	private void createPlayer(float x, float y) {
@@ -191,6 +207,8 @@ public class IdleRpgGame extends Game {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		engine.update(Gdx.graphics.getDeltaTime());
+
+		uiStage.draw();
 	}
 	
 	@Override
