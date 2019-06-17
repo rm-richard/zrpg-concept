@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import rmrichard.learn.components.PlayerComponent;
-import rmrichard.learn.components.PositionComponent;
+import rmrichard.learn.components.TransformComponent;
 import rmrichard.learn.components.TextureComponent;
 
 import static rmrichard.learn.Constants.*;
@@ -16,7 +16,7 @@ public class DrawSystem extends EntitySystem {
     private ImmutableArray<Entity> entities;
     private SpriteBatch spriteBatch;
 
-    private ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);
+    private ComponentMapper<TransformComponent> pm = ComponentMapper.getFor(TransformComponent.class);
     private ComponentMapper<TextureComponent> tm = ComponentMapper.getFor(TextureComponent.class);
 
     private OrthographicCamera camera;
@@ -30,13 +30,13 @@ public class DrawSystem extends EntitySystem {
 
     @Override
     public void addedToEngine(Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(PositionComponent.class, TextureComponent.class).get());
+        entities = engine.getEntitiesFor(Family.all(TransformComponent.class, TextureComponent.class).get());
     }
 
     @Override
     public void update(float deltaTime) {
         Entity player = getEngine().getEntitiesFor(Family.one(PlayerComponent.class).get()).first();
-        PositionComponent playerPos = pm.get(player);
+        TransformComponent playerPos = pm.get(player);
         camera.position.set(
                 MathUtils.clamp(playerPos.x, VIEW_WIDTH / 2, MAP_WIDTH - VIEW_WIDTH / 2),
                 MathUtils.clamp(playerPos.y, VIEW_HEIGHT / 2, MAP_HEIGHT - VIEW_HEIGHT / 2),
@@ -51,7 +51,7 @@ public class DrawSystem extends EntitySystem {
 
         for (int i = 0; i < entities.size(); ++i) {
             Entity entity = entities.get(i);
-            PositionComponent pos = pm.get(entity);
+            TransformComponent pos = pm.get(entity);
             TextureComponent tex = tm.get(entity);
 
             spriteBatch.draw(tex.region, pos.x, pos.y, 0, 0, tex.region.getRegionWidth(), tex.region.getRegionHeight(),

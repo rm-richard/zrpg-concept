@@ -5,7 +5,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import rmrichard.learn.components.BodyComponent;
-import rmrichard.learn.components.PositionComponent;
+import rmrichard.learn.components.TransformComponent;
 
 public class PhysicSystem extends EntitySystem {
 
@@ -13,7 +13,7 @@ public class PhysicSystem extends EntitySystem {
     private float accumulator = 0f;
 
     private ComponentMapper<BodyComponent> bm = ComponentMapper.getFor(BodyComponent.class);
-    private ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);
+    private ComponentMapper<TransformComponent> pm = ComponentMapper.getFor(TransformComponent.class);
     private ImmutableArray<Entity> entities;
 
     private World world;
@@ -24,7 +24,7 @@ public class PhysicSystem extends EntitySystem {
 
     @Override
     public void addedToEngine(Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(BodyComponent.class, PositionComponent.class).get());
+        entities = engine.getEntitiesFor(Family.all(BodyComponent.class, TransformComponent.class).get());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class PhysicSystem extends EntitySystem {
 
         for (Entity entity : entities) {
             BodyComponent bc = bm.get(entity);
-            PositionComponent pc = pm.get(entity);
+            TransformComponent pc = pm.get(entity);
 
             Vector2 position = bc.body.getPosition();
             pc.x = position.x * 10;

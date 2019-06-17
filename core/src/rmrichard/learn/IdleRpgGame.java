@@ -66,7 +66,7 @@ public class IdleRpgGame extends Game {
 
 	private void createPlayer(float x, float y) {
 		Entity playerEntity = new Entity();
-		playerEntity.add(new PositionComponent(x, y, 0.6f));
+		playerEntity.add(new TransformComponent(x, y, 0.6f));
 		playerEntity.add(new TextureComponent(new Texture("experiment/lpc-male-preview.png")));
 		playerEntity.add(new PlayerComponent());
 		playerEntity.add(new BodyComponent(createRectangleBody(playerEntity, BodyType.DynamicBody, x, y, 18, 10)));
@@ -94,16 +94,16 @@ public class IdleRpgGame extends Game {
 					break;
 				case "coin":
 					Entity coinEntity = new Entity();
-					coinEntity.add(new PositionComponent(r.x, r.y));
+					coinEntity.add(new TransformComponent(r.x, r.y, 0.4f));
 					coinEntity.add(new TextureComponent(coinTexture));
 					coinEntity.add(new ItemComponent(COIN));
 					coinEntity.add(new BodyComponent(createRectangleBody(
-							coinEntity, BodyType.StaticBody, r.x, r.y, r.width, r.height)));
+							coinEntity, BodyType.StaticBody, r.x, r.y, r.width * 0.5f, r.height * 0.5f)));
 					engine.addEntity(coinEntity);
 					break;
 				case "door":
 					Entity doorEntity = new Entity();
-					doorEntity.add(new PositionComponent(r.x, r.y));
+					doorEntity.add(new TransformComponent(r.x, r.y));
 					doorEntity.add(new TextureComponent(doorTexture));
 					doorEntity.add(new ItemComponent(DOOR));
 					doorEntity.add(new BodyComponent(createRectangleBody(
@@ -112,10 +112,10 @@ public class IdleRpgGame extends Game {
 					break;
 				case "key":
 					Entity keyEntity = new Entity();
-					keyEntity.add(new PositionComponent(r.x, r.y));
+					keyEntity.add(new TransformComponent(r.x, r.y, 0.5f));
 					keyEntity.add(new TextureComponent(keyTexture));
 					keyEntity.add(new ItemComponent(KEY));
-					Body body = createRectangleBody(keyEntity, BodyType.StaticBody, r.x, r.y, r.width, r.height);
+					Body body = createRectangleBody(keyEntity, BodyType.StaticBody, r.x, r.y, r.width * 0.6f, r.height * 0.6f);
 					body.getFixtureList().first().setSensor(true);
 					keyEntity.add(new BodyComponent(body));
 					engine.addEntity(keyEntity);
