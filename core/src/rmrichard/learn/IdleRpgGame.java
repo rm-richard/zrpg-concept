@@ -93,7 +93,7 @@ public class IdleRpgGame extends Game {
 	}
 
 	private void createPlayer(float x, float y) {
-		Texture playerTexture = new Texture("experiment/lpc-male-walk3.png");
+		Texture playerTexture = new Texture("lpc-male-walk3.png");
 		TextureRegion[][] regions = TextureRegion.split(playerTexture, 48, 64);
 
 		Entity playerEntity = new Entity();
@@ -115,7 +115,7 @@ public class IdleRpgGame extends Game {
 	}
 
 	private void createTileMap() {
-		tiledMap = new TmxMapLoader().load("experiment/test-map.tmx");
+		tiledMap = new TmxMapLoader().load("test-map.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
 		Texture coinTexture = new Texture("coin.png");
