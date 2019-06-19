@@ -49,6 +49,7 @@ public class IdleRpgGame extends Game {
 
 	private Stage uiStage;
 	private Label coinCollectedLabel;
+	private Label fpsLabel;
 
 	@Override
 	public void create () {
@@ -61,11 +62,11 @@ public class IdleRpgGame extends Game {
 		createUiStage();
 		createTileMap();
 
-		engine.addSystem(new DrawSystem(batch, camera, tiledMapRenderer));
-		engine.addSystem(new PhysicSystem(world));
-		engine.addSystem(new PlayerMovementSystem());
-		engine.addSystem(new PlayerCollisionSystem(coinCollectedLabel));
-		//engine.addSystem(new PhysicsDebugSystem(world, camera));
+        engine.addSystem(new PlayerMovementSystem());
+        engine.addSystem(new PhysicSystem(world));
+        engine.addSystem(new DrawSystem(batch, camera, tiledMapRenderer));
+        engine.addSystem(new PlayerCollisionSystem(coinCollectedLabel));
+        engine.addSystem(new PhysicsDebugSystem(world, camera));
 
 		engine.addEntityListener(Family.all(BodyComponent.class).get(),
 				new BodyRemovalListener(world));
@@ -75,9 +76,16 @@ public class IdleRpgGame extends Game {
 		uiStage = new Stage();
 		Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
 		coinCollectedLabel = new Label("Coins collected: 0", style);
-		coinCollectedLabel.setFontScale(1.8f);
+		coinCollectedLabel.setFontScale(1.5f);
+		coinCollectedLabel.setColor(0.75f, 0.85f, 0.2f, 1.0f);
 		coinCollectedLabel.setPosition(560, 20);
 		uiStage.addActor(coinCollectedLabel);
+
+		fpsLabel = new Label("FPS: ", style);
+		fpsLabel.setFontScale(1.5f);
+		fpsLabel.setColor(0.2f, 0.8f, 0.7f, 1.0f);
+		fpsLabel.setPosition(20, 20);
+		uiStage.addActor(fpsLabel);
 	}
 
 	private void createPlayer(float x, float y) {
@@ -208,6 +216,7 @@ public class IdleRpgGame extends Game {
 
 		engine.update(Gdx.graphics.getDeltaTime());
 
+		fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
 		uiStage.draw();
 	}
 	
