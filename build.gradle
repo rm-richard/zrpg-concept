@@ -22,7 +22,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "idle-rpg"
+        appName = "zrpg-concept-game"
         gdxVersion = '1.9.6'
         roboVMVersion = '2.3.6'
         box2DLightsVersion = '1.4'

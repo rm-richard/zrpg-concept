@@ -41,7 +41,7 @@ import static rmrichard.learn.Constants.VIEW_HEIGHT;
 import static rmrichard.learn.Constants.VIEW_WIDTH;
 import static rmrichard.learn.components.ItemComponent.Type.*;
 
-public class IdleRpgGame extends Game {
+public class ZrpgConceptGame extends Game {
 	private SpriteBatch batch;
 	private Engine engine;
 	private World world;
