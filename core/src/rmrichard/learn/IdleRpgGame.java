@@ -9,8 +9,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -29,6 +31,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Array;
 import rmrichard.learn.components.*;
 import rmrichard.learn.listeners.BodyRemovalListener;
 import rmrichard.learn.listeners.EntityContactListener;
@@ -64,6 +67,7 @@ public class IdleRpgGame extends Game {
 
         engine.addSystem(new PlayerMovementSystem());
         engine.addSystem(new PhysicSystem(world));
+        engine.addSystem(new AnimationSystem());
         engine.addSystem(new DrawSystem(batch, camera, tiledMapRenderer));
         engine.addSystem(new PlayerCollisionSystem(coinCollectedLabel));
         engine.addSystem(new PhysicsDebugSystem(world, camera));
@@ -89,12 +93,24 @@ public class IdleRpgGame extends Game {
 	}
 
 	private void createPlayer(float x, float y) {
+		Texture playerTexture = new Texture("experiment/lpc-male-walk3.png");
+		TextureRegion[][] regions = TextureRegion.split(playerTexture, 48, 64);
+
 		Entity playerEntity = new Entity();
+		AnimationComponent ac = new AnimationComponent();
+		ac.addAnimation("up", new Animation<>(0.1f, new Array<>(regions[0]), Animation.PlayMode.LOOP));
+		ac.addAnimation("right", new Animation<>(0.1f, new Array<>(regions[1]), Animation.PlayMode.LOOP));
+		ac.addAnimation("down", new Animation<>(0.1f, new Array<>(regions[2]), Animation.PlayMode.LOOP));
+		ac.addAnimation("left", new Animation<>(0.1f, new Array<>(regions[3]), Animation.PlayMode.LOOP));
+		ac.activeAnimation = "down";
+		playerEntity.add(ac);
+
 		playerEntity.add(new TransformComponent(x, y, 0.6f));
-		playerEntity.add(new TextureComponent(new Texture("experiment/lpc-male-preview.png")));
+		playerEntity.add(new TextureComponent(regions[2][0]));
 		playerEntity.add(new PlayerComponent());
 		playerEntity.add(new BodyComponent(createRectangleBody(playerEntity, BodyType.DynamicBody, x, y, 18, 10)));
 		playerEntity.add(new CollisionComponent());
+
 		engine.addEntity(playerEntity);
 	}
 
