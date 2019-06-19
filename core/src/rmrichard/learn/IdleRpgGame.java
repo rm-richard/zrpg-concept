@@ -105,7 +105,7 @@ public class IdleRpgGame extends Game {
 		ac.activeAnimation = "down";
 		playerEntity.add(ac);
 
-		playerEntity.add(new TransformComponent(x, y, 0.6f));
+		playerEntity.add(new TransformComponent(x, y, 0.6f, -5, 0));
 		playerEntity.add(new TextureComponent(regions[2][0]));
 		playerEntity.add(new PlayerComponent());
 		playerEntity.add(new BodyComponent(createRectangleBody(playerEntity, BodyType.DynamicBody, x, y, 18, 10)));
